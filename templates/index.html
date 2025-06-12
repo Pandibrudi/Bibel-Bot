@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bibel-Suche</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row text-center">
+            <h1>Ist es in der Bibel?!</h1>
+        </div>
+        <div class="row text text-center">
+            <div class="col">
+                <form method="post">
+                    <label for="query">Eingabe</label>
+                    <input type="text" name="query" placeholder="Schreibe einen Satz..." style="width: 300px;" required>
+                    <button class="btn-submit" type="submit">Suchen</button>
+                </form>
+            </div>          
+        </div>
+        <div class="row">
+            <div class="col-8 offset-2 text-center">
+                {% if data %}
+                <div>
+                    {% if in_bible %}
+                        <h3>"{{ query }}" hat folgende Einträge in der Bibel:</h3>
+                    {% else %}
+                        <h3>Keines dieser Wörter ist in der Bibel!</h3>
+                    {% endif %}
+                </div>
+
+                <div class="accordion" id="accordionExample">
+                    {% for word, info in data.items() %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-{{ loop.index }}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ loop.index }}" aria-expanded="true" aria-controls="collapse-{{ loop.index }}">
+                                {% if info.no_hits > 0 %}
+                                    <strong>{{ word }} 🙏 </strong> ({{ info.no_hits }} Treffer)
+                                {% else %}
+                                    <strong>{{ word }} 👿 </strong> ({{ info.no_hits }} Treffer)
+                                {% endif %}
+                            </button>     
+                        </h2>
+                        <div id="collapse-{{ loop.index }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading-{{ loop.index }}" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                {% if info.hits %}
+                                <ul>
+                                    {% for hit in info.hits %}
+                                        <li class="verse">
+                                            <strong>{{ hit[0] }}</strong><br>
+                                            <em>{{ hit[1] }}, {{ hit[2] }}, {{ hit[3] }}, {{ hit[4] }}</em>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                    <p>Keine Treffer gefunden.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+<script src="/js/bootstrap.min.js" ></script>
+
+</body>
+</html>
