@@ -8,16 +8,13 @@ import xml.etree.ElementTree as ET
 
 # nltk.download('punkt')  
 
-# at this point only Luther Bible
+def get_bible_results(query, bible_version):
 
-file_name = "GermanLutherHeuteBible.xml"
-working_dir = os.getcwd()
-path = os.path.join(working_dir, "source", file_name)
-
-tree = ET.parse(path)
-root = tree.getroot()
-
-def get_bible_results(query):
+    working_dir = os.getcwd()
+    path = os.path.join(working_dir, "source", bible_version+".xml")
+    
+    tree = ET.parse(path)
+    root = tree.getroot()
 
     tokens = word_tokenize(query)
     tokens = [token for token in tokens if token not in string.punctuation]

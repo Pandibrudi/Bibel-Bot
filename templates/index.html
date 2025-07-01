@@ -16,6 +16,12 @@
                 <form method="post">
                     <label for="query">Eingabe</label>
                     <input type="text" name="query" placeholder="Schreibe einen Satz..." style="width: 300px;" required>
+                    <select name="bible" id="bibleSelector" required>
+                        <option value="" disabled selected>Wähle eine Bibelversion...</option>
+                        {% for version in versions %}
+                            <option value="{{ version }}">{{ version }}</option>
+                        {% endfor %}
+                    </select>
                     <button class="btn-submit" type="submit">Suchen</button>
                 </form>
             </div>          
